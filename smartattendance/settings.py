@@ -74,15 +74,15 @@ WSGI_APPLICATION = 'smartattendance.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'dev': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'qa': {
-        "NAME": "smart-attendance",
+    'default': {
+        "NAME": "smartdb",
+        "DATABASE": "smartdb",
         "ENGINE": "django.db.backends.mysql",
         "USER": "mysql_user",
+        "HOST": "127.0.0.1",
+        "PORT": "3306",
         "PASSWORD": "priv4te",
+        'default-character-set': 'utf8',
     }
 }
 
