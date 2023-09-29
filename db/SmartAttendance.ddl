@@ -1,7 +1,8 @@
-CREATE TABLE Professor (
-    professor_id int NOT NULL,
-    professor_nome varchar(50) NOT NULL,
-    PRIMARY KEY (professor_id)
+CREATE TABLE Usuario (
+    usuario_id int NOT NULL,
+    usuario_nome varchar(50) NOT NULL,
+    usuario_type boolean NOT NULL,
+    PRIMARY KEY (usuario_id)
 );
 
 CREATE TABLE Turma (
@@ -10,20 +11,14 @@ CREATE TABLE Turma (
     turma_nome varchar(50) NOT NULL,
     semestre varchar(6) NOT NULL,
     PRIMARY KEY (turma_id),
-    FOREIGN KEY (professor_id) REFERENCES Professor(professor_id)
+    FOREIGN KEY (professor_id) REFERENCES Usuario(usuario_id)
 ); 
-
-CREATE TABLE Aluno (
-    aluno_id int NOT NULL,
-    Aluno_name varchar(50) NOT NULL,
-    PRIMARY KEY (aluno_id)
-);
 
 CREATE TABLE Aluno_Turma (
     turma_id int NOT NULL,
-    aluno_id int NOT NULL,
-    FOREIGN KEY (professor_id) REFERENCES Professor(professor_id),
-    FOREIGN KEY (aluno_id) REFERENCES Aluno(aluno_id)
+    usuario_id int NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id),
+    FOREIGN KEY (turma_id) REFERENCES Turma(turma_id)
 ); 
 
 CREATE TABLE Chamada (
@@ -37,9 +32,9 @@ CREATE TABLE Chamada (
 
 CREATE TABLE Presenca (
     chamada_id int NOT NULL,
-    aluno_id int NOT NULL,
+    usuario_id int NOT NULL,
     tempo_entrada time,
     tempo_saida time,
     FOREIGN KEY (chamada_id) REFERENCES Chamada(chamada_id),
-    FOREIGN KEY (aluno_id) REFERENCES Aluno(aluno_id)
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(usuario_id)
 ); 
