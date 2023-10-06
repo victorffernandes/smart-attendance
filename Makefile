@@ -7,4 +7,5 @@ setup:
 start:
 	python app/manage.py runserver
 	python app/manage.py migrate
+	python app/manage.py makemigrations
 
