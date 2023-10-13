@@ -14,3 +14,5 @@ class UsuarioViewSet(GenericViewSet,  # generic view functionality
 
       serializer_class = UsuarioSerializer
       queryset = Usuario.objects.all()
+      def custom():
+            return 'FOI'
