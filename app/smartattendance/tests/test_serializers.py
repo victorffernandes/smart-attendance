@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..serializers import UsuarioSerializer
+from ..serializers.UsuarioSerializer import UsuarioSerializer
 from .factories import UsuarioFactory
 
 

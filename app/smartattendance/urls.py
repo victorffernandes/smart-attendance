@@ -20,7 +20,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from .views import UsuarioViewSet
+from .views.UsuarioView import UsuarioViewSet
 
 router = DefaultRouter()
 router.register('usuario', UsuarioViewSet, 'usuario')

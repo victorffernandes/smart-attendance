@@ -4,8 +4,8 @@ from rest_framework.mixins import (
 )
 from rest_framework.viewsets import GenericViewSet
 
-from .models import Usuario
-from .serializers import UsuarioSerializer
+from ..models import Usuario
+from ..serializers.UsuarioSerializer import UsuarioSerializer
 
 
 class UsuarioViewSet(GenericViewSet,  # generic view functionality
