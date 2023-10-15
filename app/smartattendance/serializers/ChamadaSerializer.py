@@ -1,10 +1,10 @@
 from rest_framework.serializers import ModelSerializer
 
-from ..models import Usuario
+from ..models import Chamada
 
 class Serializer(ModelSerializer):
     class Meta:
-        model = Usuario
+        model = Chamada
         fields = (
-            'id', 'usuario_nome', 'usuario_tipo', 'id_externo'
+            'turma_id', 'data_inicio', 'data_fim', 'latitude', 'longitude'
         )

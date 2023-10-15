@@ -1,10 +1,10 @@
 from rest_framework.serializers import ModelSerializer
 
-from ..models import Usuario
+from ..models import Aluno_Turma
 
 class Serializer(ModelSerializer):
     class Meta:
-        model = Usuario
+        model = Aluno_Turma
         fields = (
-            'id', 'usuario_nome', 'usuario_tipo', 'id_externo'
+            'aluno_id', 'turma_id'
         )
