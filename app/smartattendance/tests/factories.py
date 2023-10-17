@@ -9,7 +9,7 @@ from ..models import *
 
 class UsuarioFactory(django.DjangoModelFactory):
     usuario_nome = Faker('name')
-    usuario_tipo = 'A'#Faker('A')
+    usuario_tipo = 'A'
     id_externo = '9dkad6c7-s649-9623-99e2-5a0dbgf5dfdz'#Faker('9dkad6c7-s649-9623-99e2-5a0dbgf5dfdz')
 
     class Meta:

@@ -6,8 +6,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import datetime
 
-from ..models import Usuario, Turma, Aluno_Turma, Chamada
-from ..serializers import UsuarioSerializer, TurmaSerializer, Aluno_TurmaSerializer, ChamadaSerializer
+from lib import WeekdayMap
+from ..models import Usuario, Turma, Aluno_Turma, Chamada, Turma_Horario
+from ..serializers import UsuarioSerializer, TurmaSerializer, Aluno_TurmaSerializer, ChamadaSerializer, Turma_HorarioSerializer
 
 
 class ViewSet(GenericViewSet, ListModelMixin):
@@ -17,6 +18,7 @@ class ViewSet(GenericViewSet, ListModelMixin):
 
       @action(detail=True,methods=['GET'])
       def listar_turma(self, request, pk=None):
+            date = datetime.now()
             #Pegar as informações do usuário
             user = self.get_object()
             userSerialized = UsuarioSerializer.Serializer(user).data
@@ -26,19 +28,46 @@ class ViewSet(GenericViewSet, ListModelMixin):
             #Lógica para usuário do tipo Aluno
             if userSerialized['usuario_tipo'] == 'A':
                 #Encontrar os ids das turmas que o usuário pertence
-                Turmas_Aluno = Aluno_TurmaSerializer.Serializer(Aluno_Turma.objects.filter(aluno_id=userSerialized['id']), many=True).data
-                turmas_id = map(lambda t_a:t_a['turma_id'], Turmas_Aluno)
+                turmas_id = map(lambda t_a:t_a['turma_id'], 
+                                Aluno_TurmaSerializer.Serializer(Aluno_Turma.objects.filter(aluno_id=userSerialized['id']), 
+                                                                 many=True).data)
                 
                 #Encontrar as turmas a partir dos ids
-                turmas = TurmaSerializer.Serializer(Turma.objects.filter(id__in=turmas_id), many=True)
+                turmas = TurmaSerializer.Serializer(Turma.objects.filter(id__in=turmas_id), many=True).data
                 
                 #Encontrar chamadas abertas a partir dos ids
-                chamadas = ChamadaSerializer.Serializer(Chamada.objects.filter(turma_id__in=turmas_id)
-                                                        .exclude(data_inicio__gt=datetime.now())
-                                                        .exclude(data_fim__lt=datetime.now())
-                                                        , many=True)
+                chamadas = map(lambda chamada:chamada['turma_id'],
+                               ChamadaSerializer.Serializer(Chamada.objects.filter(turma_id__in=turmas_id)
+                                                        .exclude(data_inicio__gt=date)
+                                                        .exclude(data_fim__lt=date)
+                                                        , many=True).data)
                 
-                res = {'Turmas': turmas.data, 'Chamadas': chamadas.data}
+                for turma in turmas:
+                     turma.aberta = turma.id in chamadas
+
+                res = {'Turmas': turmas}
             
-            
+            #Lógica para usuário do tipo Professor
+            else:                
+                #Encontrar as turmas que o usuário administra
+                turmas = TurmaSerializer.Serializer(Turma.objects.filter(professor_id=userSerialized['id']), many=True).data
+                turmas_id = map(lambda turma:turma['id'], turmas)
+                
+                dia_semana = date.weekday()
+
+                if dia_semana < 6:
+                    #Encontrar horarios a partir dos ids
+                    horarios = map(lambda horario:horario['turma_id'],
+                                Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id__in=turmas_id)
+                                                            .filter(dia_semana=WeekdayMap[dia_semana][0])
+                                                            .exclude(data_inicio__gt=date.hour)
+                                                            .exclude(data_fim__lt=date.hour)
+                                                            , many=True).data)
+                    
+                    for turma in turmas:
+                        turma.aberta = turma.id in horarios
+
+                res = {'Turmas': turmas}
+                 
+
             return Response(res)
