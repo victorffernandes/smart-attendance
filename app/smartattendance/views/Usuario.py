@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import datetime
 
-from lib import WeekdayMap
+from ..lib import WeekdayMap
 from ..models import Usuario, Turma, Aluno_Turma, Chamada, Turma_Horario
 from ..serializers import UsuarioSerializer, TurmaSerializer, Aluno_TurmaSerializer, ChamadaSerializer, Turma_HorarioSerializer
 
@@ -43,7 +43,7 @@ class ViewSet(GenericViewSet, ListModelMixin):
                                                         , many=True).data)
                 
                 for turma in turmas:
-                     turma.aberta = turma.id in chamadas
+                     turma['aberta'] = turma['id'] in chamadas
 
                 res = {'Turmas': turmas}
             

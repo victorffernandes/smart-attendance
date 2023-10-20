@@ -1,5 +1,5 @@
 from django.db import models
-from lib import WeekdayMap
+from .lib import WeekdayMap
 
 # Id externo extraído do firebase para login com o google, pelo que encontrei o id segue o formato: 9dkad6c7-s649-9623-99e2-5a0dbgf5dfdz,
 # com 36 caracteres
@@ -10,7 +10,6 @@ class Usuario(models.Model):
     usuario_nome = models.CharField(max_length=60)
     usuario_tipo = models.CharField(max_length=1,choices = TYPE)
     id_externo = models.CharField(max_length=36)
-
 
 class Turma(models.Model):
     professor_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)

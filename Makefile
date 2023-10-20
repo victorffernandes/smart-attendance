@@ -6,8 +6,8 @@ setup:
 
 start:
 	docker start smartdb
-	python app/manage.py runserver
 	python app/manage.py migrate
+	python app/manage.py runserver
 	python app/manage.py test smartattendance -v 2
 	python app/manage.py makemigrations
 

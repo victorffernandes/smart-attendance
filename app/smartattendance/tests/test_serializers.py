@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..serializers.UsuarioSerializer import UsuarioSerializer
+from ..serializers import UsuarioSerializer
 from .factories import UsuarioFactory
 
 
@@ -8,7 +8,7 @@ class UsuarioSerializerTestCase(TestCase):
     def test_model_fields(self):
         """Serializer data matches the Company object for each field."""
         usuario = UsuarioFactory()
-        serializer = UsuarioSerializer(usuario)
+        serializer = UsuarioSerializer.Serializer(usuario)
         for field_name in [
             'usuario_nome', 'usuario_tipo', 'id_externo'
         ]:
