@@ -34,14 +34,23 @@ jobs:
           push: true
           tags: victorffernandes/smart-attendance-bff:latest
 
-      - name: Setup SSH
-        run: | 
-          echo "${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}" > private_key 
-          cat private_key
+      - name: Add Docker Compose
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ env.server_ip }}
+          username: root
+          key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
+          source: "docker-compose-staging.yml"
+          target: root/docker-compose-staging.yml     
 
-      - name: Prepare Deploy
-        run: scp -i private_key docker-compose-staging.yml root@157.230.212.240:/root
+      - name: Deply
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ env.server_ip }}
+          username: root
+          key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
+          script: |
+            docker compose -f docker-compose-staging.yml down
+            docker compose -f docker-compose-staging.yml up -d
 
-      - name: Deploy
-        run: ssh -i private_key root@${{ env.server_ip }} -f 'docker compose -f docker-compose-staging.yml down && docker compose -f docker-compose-staging.yml up -d'
 
