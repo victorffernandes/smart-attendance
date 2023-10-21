@@ -11,6 +11,7 @@ jobs:
       registry_path: registry.digitalocean.com/smart-attendance
       do_user: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
       do_pass: ${{ secrets.DIGITAL_OCEAN_USER }}
+      server_ip: 157.230.212.240
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -33,6 +34,14 @@ jobs:
           push: true
           tags: victorffernandes/smart-attendance-bff:latest
 
+      - name: Setup SSH
+        run: echo "${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}" > private_key 
+
+      - name: Deploy
+        run: | 
+          scp -i private_key docker-compose-staging.yml root@157.230.212.240:/root &&
+          && ssh -i private_key root@${{ env.server_ip }} -f 'docker compose -f docker-compose-staging.yml down'
+          ssh -i private_key root@${{ env.server_ip }} -f 'docker compose -f docker-compose-staging.yml up -d'
 
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
