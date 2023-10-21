@@ -41,13 +41,14 @@ jobs:
 
     steps:
       - name: Add Docker Compose
-        uses: garygrossgarten/github-action-scp@release
+        uses: appleboy/scp-action@master
         with:
           host: ${{ env.server_ip }}
           username: root
-          privateKey: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
-          local: "."
-          remote: root/
+          key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
+          source: "./"
+          target: root/
+          strip_components: 1
           timeout: 60s
 
       - name: Deploy
