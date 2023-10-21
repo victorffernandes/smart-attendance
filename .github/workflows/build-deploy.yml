@@ -51,7 +51,7 @@ jobs:
           host: ${{ env.server_ip }}
           username: root
           key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
-          source: "docker-compose-staging.yml"
+          source: "docker-compose-staging.yml,docker/"
           target: root/
           timeout: 60s
 
