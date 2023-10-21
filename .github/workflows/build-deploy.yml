@@ -35,13 +35,14 @@ jobs:
       #     tags: victorffernandes/smart-attendance-bff:latest
 
       - name: Add Docker Compose
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@v0.1.3
         with:
           host: ${{ env.server_ip }}
           username: root
           key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
           source: "docker-compose-staging.yml"
-          target: root/docker-compose-staging.yml     
+          target: root/docker-compose-staging.yml
+          timeout: 60s
 
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.0
