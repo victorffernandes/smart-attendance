@@ -16,7 +16,7 @@ services:
       - "3306:3306"
   
   web:
-    build: .
+    image: victorffernandes/smart-attendance-bff:latest
     restart: on-failure
     command: sh ./docker/start.sh
     pull_policy: always
