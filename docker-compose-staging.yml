@@ -1,3 +1,7 @@
+
+networks:
+  smart-network: {}
+
 services:
   db:
     image: mysql:8
@@ -6,13 +10,15 @@ services:
       - MYSQL_USER=mysql_user
       - MYSQL_PASSWORD=priv4te
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    networks:
+      - smart-network
     ports:
       - "3306:3306"
   
   web:
-    image: victorffernandes/smart-attendance-bff:latest
-    restart: always
-    command: python app/manage.py migrate && python app/manage.py runserver 0.0.0.0:8000
+    build: .
+    restart: on-failure
+    command: sh ./docker/start.sh
     pull_policy: always
     ports:
       - "8000:8000"
@@ -20,6 +26,8 @@ services:
       - 8000
     volumes:
       - /tmp/app/mysqld:/var/run/mysqld
+    networks:
+      - smart-network
     links:
       - db
     depends_on:
