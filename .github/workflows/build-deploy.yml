@@ -28,11 +28,11 @@ jobs:
           username: ${{ env.registry_user }}
           password: ${{ env.registry_pass }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: victorffernandes/smart-attendance-bff:latest
+      # - name: Build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     push: true
+      #     tags: victorffernandes/smart-attendance-bff:latest
 
       - name: Add Docker Compose
         uses: appleboy/scp-action@v0.1.4
@@ -43,7 +43,7 @@ jobs:
           source: "docker-compose-staging.yml"
           target: root/docker-compose-staging.yml     
 
-      - name: Deply
+      - name: Deploy
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ env.server_ip }}
