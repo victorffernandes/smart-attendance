@@ -1,0 +1,34 @@
+
+networks:
+  smart-network: {}
+
+services:
+  db:
+    image: mysql:8
+    environment:
+      - MYSQL_DATABASE=smartdb
+      - MYSQL_USER=mysql_user
+      - MYSQL_PASSWORD=priv4te
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    networks:
+      - smart-network
+    ports:
+      - "3306:3306"
+  
+  web:
+    image: victorffernandes/smart-attendance-bff:latest
+    restart: on-failure
+    command: sh ./docker/start.sh
+    pull_policy: always
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    volumes:
+      - /tmp/app/mysqld:/var/run/mysqld
+    networks:
+      - smart-network
+    links:
+      - db
+    depends_on:
+      - db
