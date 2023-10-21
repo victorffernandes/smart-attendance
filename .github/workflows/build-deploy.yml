@@ -1,6 +1,9 @@
 name: Smart Attendance Backend - Deploy
 run-name: Build Deploy - Staging
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
   build-push-registry:
     runs-on: ubuntu-latest
