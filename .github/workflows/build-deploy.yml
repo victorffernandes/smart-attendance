@@ -40,7 +40,7 @@ jobs:
       - name: Deploy
         run: | 
           scp -i private_key docker-compose-staging.yml root@157.230.212.240:/root &&
-          && ssh -i private_key root@${{ env.server_ip }} -f 'docker compose -f docker-compose-staging.yml down'
+          ssh -i private_key root@${{ env.server_ip }} -f 'docker compose -f docker-compose-staging.yml down' &&
           ssh -i private_key root@${{ env.server_ip }} -f 'docker compose -f docker-compose-staging.yml up -d'
 
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
