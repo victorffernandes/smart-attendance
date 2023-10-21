@@ -82,7 +82,7 @@ DATABASES = {
         "DATABASE": "smartdb",
         "ENGINE": "django.db.backends.mysql",
         "USER": "mysql_user",
-        "HOST": "127.0.0.1",
+        "HOST": "db",
         "PORT": "3306",
         "PASSWORD": "priv4te",
         'default-character-set': 'utf8',
