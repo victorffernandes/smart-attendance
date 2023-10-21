@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: Smart Attendance Backend - Deploy
 run-name: Build Deploy - Staging
 on: [push]
 jobs:
@@ -28,11 +28,11 @@ jobs:
           username: ${{ env.registry_user }}
           password: ${{ env.registry_pass }}
 
-      # - name: Build and push
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     push: true
-      #     tags: victorffernandes/smart-attendance-bff:latest
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: victorffernandes/smart-attendance-bff:latest
 
       - name: Add Docker Compose
         uses: appleboy/scp-action@v0.1.3
@@ -41,7 +41,7 @@ jobs:
           username: root
           key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
           source: "docker-compose-staging.yml"
-          target: root/docker-compose-staging.yml
+          target: root/
           timeout: 60s
 
       - name: Deploy
@@ -51,7 +51,7 @@ jobs:
           username: root
           key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
           script: |
-            docker compose -f docker-compose-staging.yml down
-            docker compose -f docker-compose-staging.yml up -d
+            docker compose -f root/docker-compose-staging.yml down
+            docker compose -f root/docker-compose-staging.yml up -d
 
 
