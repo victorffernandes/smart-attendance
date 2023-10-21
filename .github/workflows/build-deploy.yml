@@ -1,12 +1,13 @@
 name: GitHub Actions Demo
-run-name: Build Deploy
+run-name: Build Deploy - Staging
 on: [push]
 jobs:
   build-push-registry:
     runs-on: ubuntu-latest
     environment: Staging
     env:
-      registry_token: ${{ secrets.REGISTRY_TOKEN }}
+      registry_pass: ${{ secrets.REGISTRY_PASS }}
+      registry_user: ${{ secrets.REGISTRY_USER }}
       registry_path: registry.digitalocean.com/smart-attendance
       do_user: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
       do_pass: ${{ secrets.DIGITAL_OCEAN_USER }}
@@ -15,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Registry Login
-        run: docker login -u ${{ env.registry_token }} -p ${{ env.registry_token }} registry.digitalocean.com
+        run: docker login -u ${{ env.registry_user }} -p ${{ env.registry_pass }}
 
       - name: Build
         run: docker build -t smart-attendance-bff:latest .
@@ -24,6 +25,8 @@ jobs:
         run: | 
           docker tag smart-attendance-bff:latest ${{env.registry_path}}/smart-attendance-bff:latest && 
           docker push ${{env.registry_path}}/smart-attendance-bff:latest
+
+      - name: Deploy Staging
 
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
