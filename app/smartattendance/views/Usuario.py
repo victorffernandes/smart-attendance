@@ -1,5 +1,5 @@
 from rest_framework.mixins import (
-    ListModelMixin, RetrieveModelMixin
+    RetrieveModelMixin
 )
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
@@ -11,7 +11,7 @@ from ..models import Usuario, Turma, Aluno_Turma, Chamada, Turma_Horario
 from ..serializers import UsuarioSerializer, TurmaSerializer, Aluno_TurmaSerializer, ChamadaSerializer, Turma_HorarioSerializer
 
 
-class ViewSet(GenericViewSet, ListModelMixin):
+class ViewSet(GenericViewSet, RetrieveModelMixin):
 
       serializer_class = UsuarioSerializer.Serializer
       queryset = Usuario.objects.all()
