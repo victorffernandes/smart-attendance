@@ -1,0 +1,1 @@
+WeekdayMap = [("Seg", "Segunda"), ("Ter", "Terça"), ("Qua", "Quarta"), ("Qui", "Quinta"), ("Sex", "Sexta"), ("Sab", "Sábado")]
