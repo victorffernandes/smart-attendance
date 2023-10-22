@@ -51,7 +51,8 @@ class PresencaTestCase(TestCase):
         """Teste, associando uma presença a uma chamada"""
         professor = UsuarioFactory(usuario_tipo='P')
         turma = TurmaFactory(professor_id=professor)
-        data = datetime.now().strftime('%Y-%m-%d-%H')
-        chamada = ChamadaFactory(turma_id=turma, data_inicio=data)
+        chamada = ChamadaFactory(turma_id=turma)
         aluno = UsuarioFactory()
-        
+        presenca = Presenca(aluno_id=aluno, chamada_id=chamada)
+        self.assertEqual(aluno, presenca.aluno_id)
+        self.assertEqual(chamada, presenca.chamada_id)
