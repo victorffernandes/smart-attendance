@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-p^4n6$m!!r*m0zn=0erklc2*n=cpdcy+%@8vjm2k-g$#%2ac0k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["157.230.212.240"]
 
 
 # Application definition
@@ -84,8 +84,8 @@ DATABASES = {
         "DATABASE": "smartdb",
         "ENGINE": "django.db.backends.mysql",
         "USER": "mysql_user",
-        "HOST": "127.0.0.1",
-        "PORT": "3306",
+        "HOST": "db",
+        "PORT": 3306,
         "PASSWORD": "priv4te",
         'default-character-set': 'utf8',
     }
