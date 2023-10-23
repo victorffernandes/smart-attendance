@@ -60,8 +60,8 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
                     horarios = map(lambda horario:horario['turma_id'],
                                 Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id__in=turmas_id)
                                                             .filter(dia_semana=WeekdayMap[dia_semana][0])
-                                                            .exclude(data_inicio__gt=date.hour)
-                                                            .exclude(data_fim__lt=date.hour)
+                                                            .exclude(hora_inicio__gt=date.hour)
+                                                            .exclude(hora_fim__lt=date.hour)
                                                             , many=True).data)
                     
                     for turma in turmas:
