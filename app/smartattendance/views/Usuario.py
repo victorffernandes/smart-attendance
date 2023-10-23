@@ -51,9 +51,15 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
                                                         .exclude(data_fim__lt=date)
                                                         , many=True).data)
                 
-                for turma in turmas:
-                     turma['aberta'] = turma['id'] in chamadas
+                horarios = map(lambda horario:horario['turma_id'],
+                Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id__in=turmas_id)
+                                            , many=True).data)
+                print(horarios)
 
+                for turma in turmas:
+                     turma['horarios'] = Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id=turma['id'])
+                                            , many=True).data
+                     turma['aberta'] = turma['id'] in chamadas
                 res = {'Turmas': turmas}
             
             #Lógica para usuário do tipo Professor
@@ -61,20 +67,25 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
                 #Encontrar as turmas que o usuário administra
                 turmas = TurmaSerializer.Serializer(Turma.objects.filter(professor_id=userSerialized['id']), many=True).data
                 turmas_id = map(lambda turma:turma['id'], turmas)
-                
                 dia_semana = date.weekday()
 
                 if dia_semana < 6:
                     #Encontrar horarios a partir dos ids
-                    horarios = map(lambda horario:horario['turma_id'],
+                    horarios_abertos = map(lambda horario:horario['turma_id'],
                                 Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id__in=turmas_id)
                                                             .filter(dia_semana=WeekdayMap[dia_semana][0])
                                                             .exclude(hora_inicio__gt=date.hour)
                                                             .exclude(hora_fim__lt=date.hour)
                                                             , many=True).data)
-                    
                     for turma in turmas:
-                        turma.aberta = turma['id'] in horarios
+                        turma.aberta = turma['id'] in horarios_abertos
+
+                horarios = map(lambda horario:horario['turma_id'],
+                Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id__in=turmas_id)
+                                            , many=True).data)
+                for turma in turmas:
+                        turma['horarios'] = Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id=turma['id'])
+                                            , many=True).data
 
                 res = {'Turmas': turmas}
                  
