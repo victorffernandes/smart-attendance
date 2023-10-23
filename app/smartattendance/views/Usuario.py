@@ -18,7 +18,7 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
       serializer_class = UsuarioSerializer.Serializer
       queryset = Usuario.objects.all()
 
-      @action(detail=False,methods=['GET'], url_path=r'external_id/(?P<exid>[\w-]+)')
+      @action(detail=False,methods=['GET'], url_path=r'external_id/(?P<exid>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})')
       def external_id(self, request, exid):
            print(exid)
            user = Usuario.objects.get(id_externo=str(exid))
