@@ -11,10 +11,19 @@ from ..models import Usuario, Turma, Aluno_Turma, Chamada, Turma_Horario
 from ..serializers import UsuarioSerializer, TurmaSerializer, Aluno_TurmaSerializer, ChamadaSerializer, Turma_HorarioSerializer
 
 
+
+
 class ViewSet(GenericViewSet, RetrieveModelMixin):
 
       serializer_class = UsuarioSerializer.Serializer
       queryset = Usuario.objects.all()
+
+      @action(detail=False,methods=['GET'], url_path=r'external_id/(?P<exid>[\w-]+)')
+      def external_id(self, request, exid):
+           print(exid)
+           user = Usuario.objects.get(id_externo=str(exid))
+           return Response(UsuarioSerializer.Serializer(user).data)
+
 
       @action(detail=True,methods=['GET'])
       def listar_turma(self, request, pk=None):
@@ -36,7 +45,7 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
                 turmas = TurmaSerializer.Serializer(Turma.objects.filter(id__in=turmas_id), many=True).data
                 
                 #Encontrar chamadas abertas a partir dos ids
-                chamadas = map(lambda chamada:chamada['turma_id'],
+                chamadas =  map(lambda chamada:chamada['turma_id'],
                                ChamadaSerializer.Serializer(Chamada.objects.filter(turma_id__in=turmas_id)
                                                         .exclude(data_inicio__gt=date)
                                                         .exclude(data_fim__lt=date)
@@ -65,7 +74,7 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
                                                             , many=True).data)
                     
                     for turma in turmas:
-                        turma.aberta = turma.id in horarios
+                        turma.aberta = turma['id'] in horarios
 
                 res = {'Turmas': turmas}
                  
