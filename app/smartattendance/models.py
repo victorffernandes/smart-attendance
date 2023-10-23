@@ -36,5 +36,5 @@ class Presenca(models.Model):
 class Turma_Horario(models.Model):
     turma_id = models.ForeignKey(Turma, on_delete=models.CASCADE)
     dia_semana = models.CharField(max_length=3,choices = WeekdayMap)
-    hora_inicio = models.TimeField()
-    hora_fim = models.TimeField()
+    hora_inicio = models.CharField(max_length=10)
+    hora_fim = models.CharField(max_length=10)
