@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-p^4n6$m!!r*m0zn=0erklc2*n=cpdcy+%@8vjm2k-g$#%2ac0k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["157.230.212.240", "localhost"]
+ALLOWED_HOSTS = ["157.230.212.240", "localhost", "smart-attendance-dta77b.flutterflow.app", "https://app.flutterflow.io/"]
 
 
 # Application definition
