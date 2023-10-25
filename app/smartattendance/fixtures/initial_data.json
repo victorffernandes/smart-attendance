@@ -546,6 +546,15 @@
         }
     },
     {
+        "model": "smartattendance.usuario",
+        "pk": 3,
+        "fields": {
+            "usuario_nome": "Prof. Teste",
+            "usuario_tipo": "P",
+            "id_externo": "testeprofessor256@gmail.com"
+        }
+    },
+    {
         "model": "smartattendance.turma",
         "pk": 1,
         "fields": {
@@ -555,11 +564,71 @@
         }
     },
     {
+        "model": "smartattendance.turma",
+        "pk": 2,
+        "fields": {
+            "professor_id": 3,
+            "turma_nome": "Engenharia de Software 57",
+            "semestre": "2023/2"
+        }
+    },
+    {
+        "model": "smartattendance.turma",
+        "pk": 3,
+        "fields": {
+            "professor_id": 3,
+            "turma_nome": "Banco de Dados 42",
+            "semestre": "2023/2"
+        }
+    },
+    {
+        "model": "smartattendance.turma",
+        "pk": 4,
+        "fields": {
+            "professor_id": 3,
+            "turma_nome": "Estrutura de Dados",
+            "semestre": "2023/2"
+        }
+    },
+    {
+        "model": "smartattendance.turma",
+        "pk": 5,
+        "fields": {
+            "professor_id": 3,
+            "turma_nome": "Tópicos em Computação 94",
+            "semestre": "2023/2"
+        }
+    },
+    {
         "model": "smartattendance.aluno_turma",
         "pk": 1,
         "fields": {
             "aluno_id": 2,
             "turma_id": 1
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 2,
+        "fields": {
+            "aluno_id": 2,
+            "turma_id": 2
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 3,
+        "fields": {
+            "aluno_id": 2,
+            "turma_id": 3
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 4,
+        "fields": {
+            "aluno_id": 2,
+            "turma_id": 3
         }
     },
     {
@@ -581,5 +650,68 @@
             "hora_inicio": "20:30",
             "hora_fim": "21:30"
         }
+    },
+    {
+        "model": "smartattendance.turma_horario",
+        "pk": 3,
+        "fields": {
+            "turma_id": 2,
+            "dia_semana": "Qua",
+            "hora_inicio": "20:00",
+            "hora_fim": "23:30"
+        }
+    },
+    {
+        "model": "smartattendance.turma_horario",
+        "pk": 4,
+        "fields": {
+            "turma_id": 3,
+            "dia_semana": "Qui",
+            "hora_inicio": "7:00",
+            "hora_fim": "9:00"
+        }
+    },
+    {
+        "model": "smartattendance.turma_horario",
+        "pk": 5,
+        "fields": {
+            "turma_id": 4,
+            "dia_semana": "Sex",
+            "hora_inicio": "18:00",
+            "hora_fim": "22:00"
+        }
+    },
+    {
+        "model": "smartattendance.turma_horario",
+        "pk": 6,
+        "fields": {
+            "turma_id": 5,
+            "dia_semana": "Sab",
+            "hora_inicio": "8:00",
+            "hora_fim": "12:00"
+        }
+    },
+    {
+        "model": "smartattendance.chamada",
+        "pk": 1,
+        "fields": {
+            "turma_id": 2,
+            "data_inicio": "2023-10-25 20:00:00",
+            "data_fim": "2023-10-25 23:00:00",
+            "latitude": 23.2,
+            "longitude": 25.6
+        }
+    },
+    {
+        "model": "smartattendance.chamada",
+        "pk": 2,
+        "fields": {
+            "turma_id": 3,
+            "data_inicio": "2023-10-26 7:00:00",
+            "data_fim": "2023-10-26 9:00:00",
+            "latitude": 23.2,
+            "longitude": 25.6
+        }
     }
+
 ]
