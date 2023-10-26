@@ -555,6 +555,15 @@
         }
     },
     {
+        "model": "smartattendance.usuario",
+        "pk": 4,
+        "fields": {
+            "usuario_nome": "Mauricio",
+            "usuario_tipo": "A",
+            "id_externo": "mauricioleonardo@id.uff.br"
+        }
+    },
+    {
         "model": "smartattendance.turma",
         "pk": 1,
         "fields": {
@@ -628,6 +637,30 @@
         "pk": 4,
         "fields": {
             "aluno_id": 2,
+            "turma_id": 3
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 2,
+        "fields": {
+            "aluno_id": 4,
+            "turma_id": 2
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 3,
+        "fields": {
+            "aluno_id": 4,
+            "turma_id": 3
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 4,
+        "fields": {
+            "aluno_id": 4,
             "turma_id": 3
         }
     },
