@@ -26,12 +26,17 @@ class Chamada(models.Model):
     data_fim = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
+    raio = models.FloatField(null=True)
 
 class Presenca(models.Model):
+    STATUS = [("P", "Presente"), ("F","Falta"), ("C","Contestação")]
     aluno_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     chamada_id = models.ForeignKey(Chamada, on_delete=models.CASCADE)
     tempo_entrada = models.DateTimeField()
     tempo_saida = models.DateTimeField()
+    status = models.CharField(max_length=1, choices=STATUS, default="P")
+    ultima_atualizacao = models.DateTimeField(null=True)
+    caminho_atestado = models.CharField(max_length=120, null=True)
 
 class Turma_Horario(models.Model):
     turma_id = models.ForeignKey(Turma, on_delete=models.CASCADE)
