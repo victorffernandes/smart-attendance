@@ -19,7 +19,7 @@ services:
     container_name: smartweb
     command: sh ./docker/start.sh
     ports:
-      - "80:80"
+      - "8000:8000"
     volumes:
       - /tmp/app/mysqld:/var/run/mysqld
     depends_on:

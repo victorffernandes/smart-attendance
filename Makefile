@@ -6,7 +6,7 @@ setup:
 
 start:
 	docker start smartdb
-	python app/manage.py runserver 0.0.0.0:80
+	python app/manage.py runserver 0.0.0.0:8000
 
 test:
   docker start smartdb
