@@ -2,7 +2,7 @@ version: "2"
 services:
   db:
     image: mysql:8
-    container_name: smartdb2
+    container_name: smartdb
     environment:
       - MYSQL_DATABASE=smartdb
       - MYSQL_USER=mysql_user
