@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'smartattendance.wsgi.application'
 DATABASES = {
     'default': {
         "NAME": "smartdb",
-        "DATABASE": "smartdb",
+        "DATABASE": "db",
         "ENGINE": "django.db.backends.mysql",
         "USER": "mysql_user",
         "HOST": "db",
