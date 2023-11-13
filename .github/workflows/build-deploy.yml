@@ -65,5 +65,5 @@ jobs:
           username: root
           key: ${{ secrets.DIGITAL_OCEAN_SSH_PRIVATE_KEY }}
           script: |
-            docker compose -f root/docker-compose-staging.yml down
+            docker compose -f root/docker-compose-staging.yml pull
             docker compose -f root/docker-compose-staging.yml up -d
