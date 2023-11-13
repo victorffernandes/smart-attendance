@@ -38,7 +38,7 @@ class ViewSet(GenericViewSet):
         
         # Atualizar status de todos os alunos para "FALTA"
         for aluno in alunos:
-            presenca = Presenca.objects.create(
+            Presenca.objects.create(
                 aluno_id = aluno.aluno_id,
                 chamada_id = chamada,
                 tempo_entrada = None,
