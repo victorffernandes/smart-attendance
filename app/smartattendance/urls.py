@@ -20,11 +20,12 @@ from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from .views import Turma, Usuario
+from .views import Turma, Usuario, Chamada
 
 router = DefaultRouter()
 router.register('usuario', Usuario.ViewSet, 'usuario')
 router.register('turma', Turma.ViewSet, 'turma')
+router.register('chamada', Chamada.ViewSet, 'chamada')
 
 #Schema de view para o Swagger
 #Autor: Mauricio
@@ -39,8 +40,7 @@ schema_view = get_schema_view(
       license=openapi.License(name="BSD License"),
    ),
    public=True,
-   permission_classes=(permissions.AllowAny,),
-   url='https://smartattendances.online/'
+   permission_classes=(permissions.AllowAny,)
 )
 
 urlpatterns = [
