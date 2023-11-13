@@ -25,4 +25,5 @@ class ViewSet(GenericViewSet):
         result = {'Chamada': chamada_serialized, 'Presencas': presencas_serialized}
 
         return Response(result)
+    
         
