@@ -32,8 +32,8 @@ class Presenca(models.Model):
     STATUS = [("P", "Presente"), ("F","Falta"), ("C","Contestação")]
     aluno_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     chamada_id = models.ForeignKey(Chamada, on_delete=models.CASCADE)
-    tempo_entrada = models.DateTimeField()
-    tempo_saida = models.DateTimeField()
+    tempo_entrada = models.DateTimeField(null=True)
+    tempo_saida = models.DateTimeField(null=True)
     status = models.CharField(max_length=1, choices=STATUS, default="P")
     ultima_atualizacao = models.DateTimeField(null=True)
     caminho_atestado = models.CharField(max_length=120, null=True)
