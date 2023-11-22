@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from datetime import datetime, timezone
 
 from ..models import Turma, Aluno_Turma, Chamada, Presenca, Usuario
-from ..serializers import ChamadaSerializer, TurmaSerializer, UsuarioSerializer
+from ..serializers import ChamadaSerializer, TurmaSerializer, UsuarioSerializer, PresencaSerializer
         
 
 class ViewSet(GenericViewSet):
@@ -28,15 +28,20 @@ class ViewSet(GenericViewSet):
 
         for chamada in chamadasSerialized:
             chamada['Aberta'] = False
-            if datetime.fromisoformat(chamada['data_inicio'][:-1])  > datetime.now() and datetime.fromisoformat(chamada['data_fim'][:-1]) < datetime.now():
+            if datetime.fromisoformat(chamada['data_inicio'][:-1])  < datetime.now() and datetime.fromisoformat(chamada['data_fim'][:-1]) > datetime.now():
                 chamada['Aberta'] = True
                 
         if usuarioSerialized['usuario_tipo'] == 'A':
-            presencas = Presenca.objects.filter(chamada_id__in=chamadas)
-                
-            resp = {}
+            presencas = Presenca.objects.filter(chamada_id__in=chamadas).filter(aluno_id=usuario)
+            presencasSerialized = PresencaSerializer.Serializer(presencas, many = True).data
 
-        resp = { 'chamadas': chamadas }
+            #Melhorar esse algoritmo talvez
+            for chamada in chamadasSerialized:
+                for presenca in presencasSerialized:
+                    if presenca['chamada_id'] == chamada['id']:
+                        chamada['presenca'] = presenca['status']
+
+        resp['chamadas'] = chamadasSerialized
         return Response(resp)
 
         
