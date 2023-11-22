@@ -11,9 +11,8 @@ class ViewSet(GenericViewSet):
     serializer_class = TurmaSerializer
 
     @action(detail=True, methods=['GET'])
-    def retornar_historico(self, request):
-        turma_id = request.data.get('turma_id')
-        turma = Turma.objects.get(id=turma_id)
+    def retornar_historico(self, request, pk = None):
+        turma = self.get_object()
 
         chamadas = Chamada.objects.filter(turma_id=turma.id)
         total_chamadas = chamadas.count()
