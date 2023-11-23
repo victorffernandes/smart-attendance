@@ -14,9 +14,9 @@ class ViewSet(GenericViewSet):
     def retornar_historico(self, request, pk = None):
         turma = self.get_object()
 
-        chamadas = Chamada.objects.filter(turma_id=turma.id)
+        chamadas = Chamada.objects.filter(turma=turma.id)
         total_chamadas = chamadas.count()
-        alunos = Aluno_Turma.objects.filter(turma_id=turma.id)
+        alunos = Aluno_Turma.objects.filter(turma=turma.id)
         total_alunos = alunos.count()
     
         presencas_aluno = []
@@ -24,22 +24,23 @@ class ViewSet(GenericViewSet):
         soma_presencas = 0
 
         for aluno in alunos:
-            presencas = Presenca.objects.filter(aluno_id=aluno.aluno_id, chamada_id__in=chamadas, status='P').count()
-            faltas = Presenca.objects.filter(aluno_id=aluno.aluno_id, chamada_id__in=chamadas, status='F').count()
+            presencas = Presenca.objects.filter(aluno=aluno.aluno, chamada__in=chamadas, status='P').count()
+            faltas = Presenca.objects.filter(aluno=aluno.aluno, chamada__in=chamadas, status='F').count()
 
             if total_chamadas > 0:
                 porcentagem_presenca = (presencas / total_chamadas) * 100
             else:
                 porcentagem_presenca = 0
-
+                
+                
             presencas_aluno.append({
-                'aluno_id': aluno.aluno_id.id,
+                'aluno_id': aluno.aluno.id,
                 'presencas': presencas,
                 'porcentagem_presenca': porcentagem_presenca,
             })
 
             faltas_aluno.append({
-                'aluno_id': aluno.aluno_id.id,
+                'aluno_id': aluno.aluno.id,
                 'faltas': faltas,
             })
             
