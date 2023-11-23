@@ -567,7 +567,7 @@
         "model": "smartattendance.turma",
         "pk": 1,
         "fields": {
-            "professor_id": 1,
+            "professor": 1,
             "turma_nome": "Engenharia de Software 2",
             "semestre": "2023/2"
         }
@@ -576,7 +576,7 @@
         "model": "smartattendance.turma",
         "pk": 2,
         "fields": {
-            "professor_id": 3,
+            "professor": 3,
             "turma_nome": "Engenharia de Software 57",
             "semestre": "2023/2"
         }
@@ -585,7 +585,7 @@
         "model": "smartattendance.turma",
         "pk": 3,
         "fields": {
-            "professor_id": 3,
+            "professor": 3,
             "turma_nome": "Banco de Dados 42",
             "semestre": "2023/2"
         }
@@ -594,7 +594,7 @@
         "model": "smartattendance.turma",
         "pk": 4,
         "fields": {
-            "professor_id": 3,
+            "professor": 3,
             "turma_nome": "Estrutura de Dados",
             "semestre": "2023/2"
         }
@@ -603,7 +603,7 @@
         "model": "smartattendance.turma",
         "pk": 5,
         "fields": {
-            "professor_id": 3,
+            "professor": 3,
             "turma_nome": "Tópicos em Computação 94",
             "semestre": "2023/2"
         }
@@ -612,63 +612,63 @@
         "model": "smartattendance.aluno_turma",
         "pk": 1,
         "fields": {
-            "aluno_id": 2,
-            "turma_id": 1
+            "aluno": 2,
+            "turma": 1
         }
     },
     {
         "model": "smartattendance.aluno_turma",
         "pk": 2,
         "fields": {
-            "aluno_id": 2,
-            "turma_id": 2
+            "aluno": 2,
+            "turma": 2
         }
     },
     {
         "model": "smartattendance.aluno_turma",
         "pk": 3,
         "fields": {
-            "aluno_id": 2,
-            "turma_id": 3
+            "aluno": 2,
+            "turma": 3
         }
     },
     {
         "model": "smartattendance.aluno_turma",
         "pk": 4,
         "fields": {
-            "aluno_id": 2,
-            "turma_id": 3
+            "aluno": 2,
+            "turma": 3
         }
     },
     {
         "model": "smartattendance.aluno_turma",
         "pk": 2,
         "fields": {
-            "aluno_id": 4,
-            "turma_id": 2
+            "aluno": 4,
+            "turma": 2
         }
     },
     {
         "model": "smartattendance.aluno_turma",
         "pk": 3,
         "fields": {
-            "aluno_id": 4,
-            "turma_id": 3
+            "aluno": 4,
+            "turma": 3
         }
     },
     {
         "model": "smartattendance.aluno_turma",
         "pk": 4,
         "fields": {
-            "aluno_id": 4,
-            "turma_id": 3
+            "aluno": 4,
+            "turma": 3
         }
     },
     {
         "model": "smartattendance.turma_horario",
         "pk": 1,
         "fields": {
-            "turma_id": 1,
+            "turma": 1,
             "dia_semana": "Seg",
             "hora_inicio": "23:30",
             "hora_fim": "23:50"
@@ -678,7 +678,7 @@
         "model": "smartattendance.turma_horario",
         "pk": 2,
         "fields": {
-            "turma_id": 1,
+            "turma": 1,
             "dia_semana": "Ter",
             "hora_inicio": "20:30",
             "hora_fim": "21:30"
@@ -688,7 +688,7 @@
         "model": "smartattendance.turma_horario",
         "pk": 3,
         "fields": {
-            "turma_id": 2,
+            "turma": 2,
             "dia_semana": "Qua",
             "hora_inicio": "20:00",
             "hora_fim": "23:30"
@@ -698,7 +698,7 @@
         "model": "smartattendance.turma_horario",
         "pk": 4,
         "fields": {
-            "turma_id": 3,
+            "turma": 3,
             "dia_semana": "Qui",
             "hora_inicio": "7:00",
             "hora_fim": "9:00"
@@ -708,7 +708,7 @@
         "model": "smartattendance.turma_horario",
         "pk": 5,
         "fields": {
-            "turma_id": 4,
+            "turma": 4,
             "dia_semana": "Sex",
             "hora_inicio": "18:00",
             "hora_fim": "22:00"
@@ -718,7 +718,7 @@
         "model": "smartattendance.turma_horario",
         "pk": 6,
         "fields": {
-            "turma_id": 5,
+            "turma": 5,
             "dia_semana": "Sab",
             "hora_inicio": "8:00",
             "hora_fim": "12:00"
@@ -728,7 +728,7 @@
         "model": "smartattendance.chamada",
         "pk": 1,
         "fields": {
-            "turma_id": 2,
+            "turma": 2,
             "data_inicio": "2023-10-25 20:00:00",
             "data_fim": "2023-10-25 23:00:00",
             "latitude": 23.2,
@@ -739,7 +739,7 @@
         "model": "smartattendance.chamada",
         "pk": 2,
         "fields": {
-            "turma_id": 3,
+            "turma": 3,
             "data_inicio": "2023-10-26 7:00:00",
             "data_fim": "2023-10-26 9:00:00",
             "latitude": 23.2,

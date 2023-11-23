@@ -14,17 +14,17 @@ class ViewSet(GenericViewSet):
     
     @action(detail=False,methods=['PUT'])
     def iniciar_chamada(self, request):
-        turma_id = request.data.get('turma_id')
+        turma = request.data.get('turma')
         latitude = request.data.get('latitude')
         longitude = request.data.get('longitude')
         data_fim = request.data.get('data_fim')
         raio = request.data.get('raio')
 
         
-        turma = Turma.objects.get(id=turma_id)
+        turma = Turma.objects.get(id=turma)
         # Cria uma nova chamada
         chamada = Chamada.objects.create(
-            turma_id=turma,
+            turma=turma,
             data_inicio=datetime.now(),
             data_fim=data_fim,
             latitude=latitude,
@@ -34,13 +34,13 @@ class ViewSet(GenericViewSet):
         
         chamada_serializer = ChamadaSerializer.Serializer(chamada).data
         # Filtra os alunos da turma
-        alunos = Aluno_Turma.objects.filter(turma_id=turma_id)
+        alunos = Aluno_Turma.objects.filter(turma=turma)
         
         # Atualizar status de todos os alunos para "FALTA"
-        for aluno in alunos:
+        for al in alunos:
             Presenca.objects.create(
-                aluno_id = aluno.aluno_id,
-                chamada_id = chamada,
+                aluno = al.aluno,
+                chamada = chamada,
                 tempo_entrada = None,
                 tempo_saida = None,
                 status = "F",
