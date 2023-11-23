@@ -2,24 +2,24 @@ from django.test import TestCase
 
 from .factories import *
 from ..lib import WeekdayMap
-
-
+from django.utils import timezone
+import pytz
 class UsuarioTestCase(TestCase):
     def test_str(self):
-        """Teste criando usuário e associando a um tipo específico"""
+        #"""Teste criando usuário e associando a um tipo específico"""
         usuario = UsuarioFactory(usuario_tipo='P')
         self.assertEqual('P', usuario.usuario_tipo)
 
 class TurmaTestCase(TestCase):
     def test_str(self):
-        """Teste criando uma turma com um professor"""
+        #"""Teste criando uma turma com um professor"""
         usuario = UsuarioFactory(usuario_tipo='P')
         turma = TurmaFactory(professor_id=usuario)
         self.assertEqual(usuario, turma.professor_id)
 
 class Aluno_TurmaTestCase(TestCase):
     def test_str(self):
-        """Teste, associando um aluno a uma turma"""
+        #"""Teste, associando um aluno a uma turma"""
         professor = UsuarioFactory(usuario_tipo='P')
         aluno = UsuarioFactory()
         turma = TurmaFactory(professor_id=professor)
@@ -29,7 +29,7 @@ class Aluno_TurmaTestCase(TestCase):
 
 class Turma_HorarioTestCase(TestCase):
     def test_str(self):
-        """Teste, associando Turma_Horario a uma turma"""
+        #"""Teste, associando Turma_Horario a uma turma"""
         professor = UsuarioFactory(usuario_tipo='P')
         turma = TurmaFactory(professor_id=professor)
         turma_horario = Turma_HorarioFactory(turma_id=turma, dia_semana=WeekdayMap[2][0])
@@ -38,7 +38,7 @@ class Turma_HorarioTestCase(TestCase):
 
 class ChamadaTestCase(TestCase):
     def test_str(self):
-        """Teste, associando uma Chamada à turma"""        
+        #"""Teste, associando uma Chamada à turma"""        
         professor = UsuarioFactory(usuario_tipo='P')
         turma = TurmaFactory(professor_id=professor)
         data = datetime.now().strftime('%Y-%m-%d-%H')
@@ -48,7 +48,7 @@ class ChamadaTestCase(TestCase):
 
 class PresencaTestCase(TestCase):
     def test_str(self):
-        """Teste, associando uma presença a uma chamada"""
+        #"""Teste, associando uma presença a uma chamada"""
         professor = UsuarioFactory(usuario_tipo='P')
         turma = TurmaFactory(professor_id=professor)
         chamada = ChamadaFactory(turma_id=turma)

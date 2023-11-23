@@ -2,8 +2,8 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from datetime import datetime
-
-
+from django.utils import timezone
+import pytz
 from ..lib import WeekdayMap
 from .factories import *
 
@@ -41,7 +41,7 @@ class UsuarioViewSetTestCase(TestCase):
           self.assertEqual(response.status_code, status.HTTP_200_OK)
           self.assertEqual(len(response.data['Turmas']), 2)
       
-      def WIP_test_get_listar_turmas_professor(self):
+      def test_get_listar_turmas_professor(self):
           """Listar turmas de professor, turma com flag de horário de chamada"""
           date = datetime.now()
           dia_semana = date.weekday()
@@ -53,7 +53,7 @@ class UsuarioViewSetTestCase(TestCase):
           self.assertEqual(response.status_code, status.HTTP_200_OK)
           self.assertEqual(len(response.data['Turmas']), 2)
 
-      def WIP_test_get_listar_turmas_professor(self):
+      def test_get_listar_turmas_professor(self):
           """Listar turmas de professor, turma com flag de horário de chamada"""
           date = datetime.now()
           dia_semana = date.weekday()

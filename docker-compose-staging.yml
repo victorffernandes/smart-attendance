@@ -12,7 +12,7 @@ services:
       - "3306:3306"
     volumes:
       - /opt/docker/smartattendance/volumes/mysql:/var/lib/mysql
-  
+
   web:
     image: victorffernandes/smart-attendance-bff:latest
     restart: on-failure
