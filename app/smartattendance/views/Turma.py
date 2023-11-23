@@ -23,7 +23,7 @@ class ViewSet(GenericViewSet):
         usuarioSerialized = UsuarioSerializer.Serializer(usuario).data
         resp = {}
 
-        chamadas = Chamada.objects.filter(turma_id=turma)
+        chamadas = Chamada.objects.filter(turma=turma)
         chamadasSerialized = ChamadaSerializer.Serializer(chamadas, many = True).data
 
         for chamada in chamadasSerialized:
@@ -32,13 +32,13 @@ class ViewSet(GenericViewSet):
                 chamada['Aberta'] = True
                 
         if usuarioSerialized['usuario_tipo'] == 'A':
-            presencas = Presenca.objects.filter(chamada_id__in=chamadas).filter(aluno_id=usuario)
+            presencas = Presenca.objects.filter(chamada__in=chamadas).filter(aluno=usuario)
             presencasSerialized = PresencaSerializer.Serializer(presencas, many = True).data
 
             #Melhorar esse algoritmo talvez
             for chamada in chamadasSerialized:
                 for presenca in presencasSerialized:
-                    if presenca['chamada_id'] == chamada['id']:
+                    if presenca['chamada'] == chamada['id']:
                         chamada['presenca'] = presenca['status']
 
         resp['chamadas'] = chamadasSerialized

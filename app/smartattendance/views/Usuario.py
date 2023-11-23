@@ -59,7 +59,7 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
             #Lógica para usuário do tipo Professor
             else:                
                 #Encontrar as turmas que o usuário administra
-                turmas = TurmaSerializer.Serializer(Turma.objects.filter(professor_id=userSerialized['id']), many=True).data
+                turmas = TurmaSerializer.Serializer(Turma.objects.filter(professor=userSerialized['id']), many=True).data
                 turmas_id = map(lambda turma:turma['id'], turmas)
                 dia_semana = date.weekday()
 
