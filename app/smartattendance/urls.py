@@ -20,12 +20,13 @@ from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from .views import Turma, Usuario, Historico
+from .views import Turma, Usuario, Historico, Atestado
 
 router = DefaultRouter()
 router.register('usuario', Usuario.ViewSet, 'usuario')
 router.register('turma', Turma.ViewSet, 'turma')
 router.register('historico', Historico.ViewSet, 'historico')
+router.register('atestado', Atestado.ViewSet, 'atestado')
 
 #Schema de view para o Swagger
 #Autor: Mauricio
