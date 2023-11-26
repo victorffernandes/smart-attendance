@@ -27,8 +27,6 @@ class ViewSet(GenericViewSet):
         
         presenca.save()
 
-        presencas_serialized = PresencaSerializer.Serializer(presenca).data
-
-        return Response(presencas_serialized)
+        return Response()
     
         
