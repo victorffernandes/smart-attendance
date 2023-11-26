@@ -2,8 +2,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from ..models import Turma, Aluno_Turma, Chamada, Presenca
-from ..serializers import TurmaSerializer
+from ..models import Turma, Aluno_Turma, Chamada, Presenca, Usuario
+from ..serializers import TurmaSerializer, UsuarioSerializer
 
 class ViewSet(GenericViewSet):
     
@@ -32,20 +32,23 @@ class ViewSet(GenericViewSet):
             else:
                 porcentagem_presenca = 0
                 
-                
+            user = UsuarioSerializer.Serializer(Usuario.objects.get(id=aluno.aluno.id)).data
+
             presencas_aluno.append({
-                'aluno_id': aluno.aluno.id,
+                'aluno_id': user['id'],
+                'nome': user['usuario_nome'],
                 'presencas': presencas,
                 'porcentagem_presenca': porcentagem_presenca,
             })
 
             faltas_aluno.append({
-                'aluno_id': aluno.aluno.id,
+                'aluno_id': user['id'],
+                'nome': user['usuario_nome'],
                 'faltas': faltas,
             })
+
+            soma_presencas += presencas
             
-        for presenca in presencas_aluno:
-            soma_presencas += presenca['presencas']
         
         media_turma = soma_presencas / total_alunos
 
