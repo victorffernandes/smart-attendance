@@ -41,9 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'smartattendance',
     'rest_framework',
-    'drf_yasg'
+    'drf_yasg',
+    'corsheaders'
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 MIDDLEWARE = [
@@ -54,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'smartattendance.urls'
