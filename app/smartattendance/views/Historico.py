@@ -2,8 +2,8 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from ..models import Turma, Aluno_Turma, Chamada, Presenca
-from ..serializers import TurmaSerializer
+from ..models import Turma, Aluno_Turma, Chamada, Presenca, Usuario
+from ..serializers import TurmaSerializer, UsuarioSerializer
 
 class ViewSet(GenericViewSet):
     
@@ -14,9 +14,9 @@ class ViewSet(GenericViewSet):
     def retornar_historico(self, request, pk = None):
         turma = self.get_object()
 
-        chamadas = Chamada.objects.filter(turma_id=turma.id)
+        chamadas = Chamada.objects.filter(turma=turma.id)
         total_chamadas = chamadas.count()
-        alunos = Aluno_Turma.objects.filter(turma_id=turma.id)
+        alunos = Aluno_Turma.objects.filter(turma=turma.id)
         total_alunos = alunos.count()
     
         presencas_aluno = []
@@ -24,27 +24,31 @@ class ViewSet(GenericViewSet):
         soma_presencas = 0
 
         for aluno in alunos:
-            presencas = Presenca.objects.filter(aluno_id=aluno.aluno_id, chamada_id__in=chamadas, status='P').count()
-            faltas = Presenca.objects.filter(aluno_id=aluno.aluno_id, chamada_id__in=chamadas, status='F').count()
+            presencas = Presenca.objects.filter(aluno=aluno.aluno, chamada__in=chamadas, status='P').count()
+            faltas = Presenca.objects.filter(aluno=aluno.aluno, chamada__in=chamadas, status='F').count()
 
             if total_chamadas > 0:
                 porcentagem_presenca = (presencas / total_chamadas) * 100
             else:
                 porcentagem_presenca = 0
+                
+            user = UsuarioSerializer.Serializer(Usuario.objects.get(id=aluno.aluno.id)).data
 
             presencas_aluno.append({
-                'aluno_id': aluno.aluno_id.id,
+                'aluno_id': user['id'],
+                'nome': user['usuario_nome'],
                 'presencas': presencas,
                 'porcentagem_presenca': porcentagem_presenca,
             })
 
             faltas_aluno.append({
-                'aluno_id': aluno.aluno_id.id,
+                'aluno_id': user['id'],
+                'nome': user['usuario_nome'],
                 'faltas': faltas,
             })
+
+            soma_presencas += presencas
             
-        for presenca in presencas_aluno:
-            soma_presencas += presenca['presencas']
         
         media_turma = soma_presencas / total_alunos
 

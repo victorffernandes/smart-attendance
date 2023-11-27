@@ -12,16 +12,16 @@ class Usuario(models.Model):
     id_externo = models.CharField(max_length=36)
 
 class Turma(models.Model):
-    professor_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    professor = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     turma_nome = models.CharField(max_length=60)
     semestre = models.CharField(max_length=6)
 
 class Aluno_Turma(models.Model):
-    aluno_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    turma_id = models.ForeignKey(Turma, on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE)
 
 class Chamada(models.Model):
-    turma_id = models.ForeignKey(Turma, on_delete=models.CASCADE)
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE)
     data_inicio = models.DateTimeField()
     data_fim = models.DateTimeField()
     latitude = models.FloatField()
@@ -30,8 +30,8 @@ class Chamada(models.Model):
 
 class Presenca(models.Model):
     STATUS = [("P", "Presente"), ("F","Falta"), ("C","Contestação")]
-    aluno_id = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    chamada_id = models.ForeignKey(Chamada, on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    chamada = models.ForeignKey(Chamada, on_delete=models.CASCADE)
     tempo_entrada = models.DateTimeField(null=True)
     tempo_saida = models.DateTimeField(null=True)
     status = models.CharField(max_length=1, choices=STATUS, default="P")
@@ -39,7 +39,7 @@ class Presenca(models.Model):
     caminho_atestado = models.CharField(max_length=120, null=True)
 
 class Turma_Horario(models.Model):
-    turma_id = models.ForeignKey(Turma, on_delete=models.CASCADE)
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE)
     dia_semana = models.CharField(max_length=3,choices = WeekdayMap)
     hora_inicio = models.CharField(max_length=10)
     hora_fim = models.CharField(max_length=10)

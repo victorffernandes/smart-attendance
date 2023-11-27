@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-p^4n6$m!!r*m0zn=0erklc2*n=cpdcy+%@8vjm2k-g$#%2ac0k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 ALLOWED_HOSTS = ["157.230.212.240", "localhost", "smart-attendance-dta77b.flutterflow.app", "https://app.flutterflow.io/", "smartattendances.online", "*"]
 
 
@@ -39,9 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'smartattendance',
     'rest_framework',
-    'drf_yasg'
+    'drf_yasg',
+    'corsheaders'
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 MIDDLEWARE = [
@@ -52,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'smartattendance.urls'
@@ -84,7 +90,7 @@ DATABASES = {
         "DATABASE": "db",
         "ENGINE": "django.db.backends.mysql",
         "USER": "mysql_user",
-        "HOST": "127.0.0.1",
+        "HOST": "db",
         "PORT": 3306,
         "PASSWORD": "priv4te",
         'default-character-set': 'utf8',
