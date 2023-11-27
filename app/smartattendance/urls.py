@@ -20,13 +20,14 @@ from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from .views import Turma, Usuario, Historico, Atestado, Presenca, Chamada
 
-from .views import Turma, Usuario, Historico, Chamada, Presenca 
 
 router = DefaultRouter()
 router.register('usuario', Usuario.ViewSet, 'usuario')
 router.register('turma', Turma.ViewSet, 'turma')
 router.register('historico', Historico.ViewSet, 'historico')
+router.register('atestado', Atestado.ViewSet, 'atestado')
 router.register('chamada', Chamada.ViewSet, 'chamada')
 router.register('presenca', Presenca.ViewSet, 'presenca')
 

@@ -22,6 +22,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - /opt/docker/smartattendance/volumes/web:/var/lib/atestado
       - /tmp/app/mysqld:/var/run/mysqld
       - /web/files:/var/run/web/files
     depends_on:
