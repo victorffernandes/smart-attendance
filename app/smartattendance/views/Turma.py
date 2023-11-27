@@ -19,7 +19,6 @@ class ViewSet(GenericViewSet):
         turma_id = request.query_params['turma']
 
         turma = Turma.objects.get(id=turma_id)
-        turmaSerialized = TurmaSerializer.Serializer(turma).data
         usuario = Usuario.objects.get(id=usuario_id)
         usuarioSerialized = UsuarioSerializer.Serializer(usuario).data
         resp = {}
@@ -29,8 +28,12 @@ class ViewSet(GenericViewSet):
 
         for chamada in chamadasSerialized:
             chamada['Aberta'] = False
-            if datetime.fromisoformat(chamada['data_inicio'][:-1])  < datetime.now() and datetime.fromisoformat(chamada['data_fim'][:-1]) > datetime.now():
+            data_inicio = datetime.fromisoformat(chamada['data_inicio'][:-1])
+            data_fim = datetime.fromisoformat(chamada['data_fim'][:-1])
+            if data_inicio  < datetime.now() and data_fim > datetime.now():
                 chamada['Aberta'] = True
+            chamada['data_inicio'] = data_inicio.strftime('%d/%m/%Y-%H:%M')
+            chamada['data_fim'] = data_fim.strftime('%d/%m/%Y-%H:%M')
                 
         if usuarioSerialized['usuario_tipo'] == 'A':
             presencas = Presenca.objects.filter(chamada__in=chamadas).filter(aluno=usuario)
