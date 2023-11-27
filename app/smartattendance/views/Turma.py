@@ -1,10 +1,11 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from datetime import datetime, timezone
+from datetime import datetime, timedelta 
 
 from ..models import Turma, Aluno_Turma, Chamada, Presenca, Usuario
 from ..serializers import ChamadaSerializer, TurmaSerializer, UsuarioSerializer, PresencaSerializer
+from ..lib import extrair_lat_long
         
 
 class ViewSet(GenericViewSet):
@@ -50,10 +51,12 @@ class ViewSet(GenericViewSet):
     @action(detail=False,methods=['PUT'])
     def iniciar_chamada(self, request):
         turma = request.data.get('turma')
-        latitude = request.data.get('latitude')
-        longitude = request.data.get('longitude')
-        data_fim = request.data.get('data_fim')
+        latLong = extrair_lat_long(request.data.get('latLong'))
+        data_fim = int(request.data.get('data_fim'))
         raio = request.data.get('raio')
+
+        latitude = latLong[0]
+        longitude = latLong[1]
 
         
         turma = Turma.objects.get(id=turma)
@@ -61,7 +64,7 @@ class ViewSet(GenericViewSet):
         chamada = Chamada.objects.create(
             turma=turma,
             data_inicio=datetime.now(),
-            data_fim=data_fim,
+            data_fim=(datetime.now() + timedelta(minutes=data_fim)).strftime('%Y-%m-%d-%H:%M:%S'),
             latitude=latitude,
             longitude=longitude,
             raio=raio
