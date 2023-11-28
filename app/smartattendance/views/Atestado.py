@@ -43,7 +43,5 @@ class ViewSet(GenericViewSet):
     def retornar(self, request, format=None, pk=None):
         presenca = self.get_object()
         atestado = open(presenca.caminho_atestado, 'rb')
-        filename = str(presenca.id) + '.jpg'
-        response = HttpResponse(File(atestado), content_type='application/jpg')
-        response['Content-Disposition'] = 'attachment; filename="%s"' % filename
+        response = HttpResponse(File(atestado), content_type='image/jpg')
         return response
