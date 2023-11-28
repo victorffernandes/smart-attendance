@@ -4,7 +4,7 @@ WeekdayMap = [("Seg", "Segunda"), ("Ter", "Terça"), ("Qua", "Quarta"), ("Qui", 
 
 def extrair_lat_long(string):
     # Padrao da expressao regular para encontrar os valores de latitude e longitude
-    padrao = r"LatLng\(Lat:\s*([-+]?\d+\.\d+),\s*Long:\s*([-+]?\d+\.\d+)\)"
+    padrao = r"LatLng\(lat:\s*([-+]?\d+\.\d+),\s*lng:\s*([-+]?\d+\.\d+)\)"
     
     # Procurar o padrao na string fornecida
     match = re.search(padrao, string)
