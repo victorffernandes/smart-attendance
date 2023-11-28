@@ -22,7 +22,7 @@ class ViewSet(GenericViewSet):
         aluno = request.data['aluno']
 
         presenca = Presenca.objects.get(chamada=chamada, aluno=aluno)
-        path = 'var/lib/atestado/' + str(presenca.id) + '.jpg'
+        path = '/var/lib/atestado/' + str(presenca.id) + '.jpg'
         presenca.status = 'C'
         presenca.caminho_atestado = path
         presenca.ultima_atualizacao = datetime.now()
