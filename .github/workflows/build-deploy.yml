@@ -67,3 +67,5 @@ jobs:
           script: |
             docker compose -f root/docker-compose-staging.yml pull
             docker compose -f root/docker-compose-staging.yml up -d
+            docker restart smartdb
+            docker restart smartweb
