@@ -564,6 +564,15 @@
         }
     },
     {
+        "model": "smartattendance.usuario",
+        "pk": 5,
+        "fields": {
+            "usuario_nome": "Aluno Teste",
+            "usuario_tipo": "A",
+            "id_externo": "alunotestees2@gmail.com"
+        }
+    },
+    {
         "model": "smartattendance.turma",
         "pk": 1,
         "fields": {
@@ -642,7 +651,7 @@
     },
     {
         "model": "smartattendance.aluno_turma",
-        "pk": 2,
+        "pk": 5,
         "fields": {
             "aluno": 4,
             "turma": 2
@@ -650,7 +659,7 @@
     },
     {
         "model": "smartattendance.aluno_turma",
-        "pk": 3,
+        "pk": 6,
         "fields": {
             "aluno": 4,
             "turma": 3
@@ -658,10 +667,34 @@
     },
     {
         "model": "smartattendance.aluno_turma",
-        "pk": 4,
+        "pk": 7,
         "fields": {
             "aluno": 4,
             "turma": 3
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 7,
+        "fields": {
+            "aluno": 5,
+            "turma": 3
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 8,
+        "fields": {
+            "aluno": 5,
+            "turma": 4
+        }
+    },
+    {
+        "model": "smartattendance.aluno_turma",
+        "pk": 9,
+        "fields": {
+            "aluno": 5,
+            "turma": 5
         }
     },
     {
