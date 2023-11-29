@@ -1,10 +1,11 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from datetime import datetime
+from datetime import datetime, timedelta 
 
-from ..models import Turma, Aluno_Turma, Chamada, Presenca
-from ..serializers import ChamadaSerializer
+from ..models import Turma, Aluno_Turma, Chamada, Presenca, Usuario
+from ..serializers import ChamadaSerializer, TurmaSerializer, UsuarioSerializer, PresencaSerializer
+from ..lib import extrair_lat_long
         
 
 class ViewSet(GenericViewSet):
@@ -12,21 +13,61 @@ class ViewSet(GenericViewSet):
     serializer_class = ChamadaSerializer.Serializer
     queryset = Chamada.objects.all()
     
-    @action(detail=False,methods=['PUT'])
-    def iniciar_chamada(self, request):
-        turma_id = request.data.get('turma_id')
-        latitude = request.data.get('latitude')
-        longitude = request.data.get('longitude')
-        data_fim = request.data.get('data_fim')
-        raio = request.data.get('raio')
+    @action(detail=False, methods=['GET'])
+    def listar_chamada(self, request):
+        usuario_id = request.query_params['user']
+        turma_id = request.query_params['turma']
+
+        turma = Turma.objects.get(id=turma_id)
+        usuario = Usuario.objects.get(id=usuario_id)
+        usuarioSerialized = UsuarioSerializer.Serializer(usuario).data
+        resp = {}
+
+        chamadas = Chamada.objects.filter(turma=turma)
+        chamadasSerialized = ChamadaSerializer.Serializer(chamadas, many = True).data
+
+        for chamada in chamadasSerialized:
+            chamada['Aberta'] = False
+            data_inicio = datetime.fromisoformat(chamada['data_inicio'][:-1])
+            data_fim = datetime.fromisoformat(chamada['data_fim'][:-1])
+            if data_inicio  < datetime.now() and data_fim > datetime.now():
+                chamada['Aberta'] = True
+            chamada['data_inicio'] = data_inicio.strftime('%d/%m/%Y-%H:%M')
+            chamada['data_fim'] = data_fim.strftime('%d/%m/%Y-%H:%M')
+                
+        if usuarioSerialized['usuario_tipo'] == 'A':
+            presencas = Presenca.objects.filter(chamada__in=chamadas).filter(aluno=usuario)
+            presencasSerialized = PresencaSerializer.Serializer(presencas, many = True).data
+
+            #Melhorar esse algoritmo talvez
+            for chamada in chamadasSerialized:
+                for presenca in presencasSerialized:
+                    if presenca['chamada'] == chamada['id']:
+                        chamada['presenca'] = presenca['status']
+
+        resp['chamadas'] = chamadasSerialized
+        return Response(resp)
 
         
-        turma = Turma.objects.get(id=turma_id)
+
+
+    @action(detail=False,methods=['PUT'])
+    def iniciar_chamada(self, request):
+        turma = request.data.get('turma')
+        latLong = extrair_lat_long(request.data.get('latLong'))
+        data_fim = int(request.data.get('data_fim'))
+        raio = request.data.get('raio')
+
+        latitude = latLong[0]
+        longitude = latLong[1]
+
+        
+        turma = Turma.objects.get(id=turma)
         # Cria uma nova chamada
         chamada = Chamada.objects.create(
-            turma_id=turma,
+            turma=turma,
             data_inicio=datetime.now(),
-            data_fim=data_fim,
+            data_fim=(datetime.now() + timedelta(minutes=data_fim)).strftime('%Y-%m-%d-%H:%M:%S'),
             latitude=latitude,
             longitude=longitude,
             raio=raio
@@ -34,13 +75,13 @@ class ViewSet(GenericViewSet):
         
         chamada_serializer = ChamadaSerializer.Serializer(chamada).data
         # Filtra os alunos da turma
-        alunos = Aluno_Turma.objects.filter(turma_id=turma_id)
+        alunos = Aluno_Turma.objects.filter(turma=turma)
         
         # Atualizar status de todos os alunos para "FALTA"
-        for aluno in alunos:
+        for al in alunos:
             Presenca.objects.create(
-                aluno_id = aluno.aluno_id,
-                chamada_id = chamada,
+                aluno = al.aluno,
+                chamada = chamada,
                 tempo_entrada = None,
                 tempo_saida = None,
                 status = "F",

@@ -20,7 +20,6 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
 
       @action(detail=False,methods=['GET'], url_path=r'external_id/(?P<exid>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})')
       def external_id(self, request, exid):
-           print(exid)
            user = Usuario.objects.get(id_externo=str(exid))
            return Response(UsuarioSerializer.Serializer(user).data)
 
@@ -37,8 +36,8 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
             #Lógica para usuário do tipo Aluno
             if userSerialized['usuario_tipo'] == 'A':
                 #Encontrar os ids das turmas que o usuário pertence
-                turmas_id = map(lambda t_a:t_a['turma_id'], 
-                                Aluno_TurmaSerializer.Serializer(Aluno_Turma.objects.filter(aluno_id=userSerialized['id']), 
+                turmas_id = map(lambda t_a:t_a['turma'], 
+                                Aluno_TurmaSerializer.Serializer(Aluno_Turma.objects.filter(aluno=userSerialized['id']), 
                                                                  many=True).data)
                 
                 #Encontrar as turmas a partir dos ids
@@ -46,13 +45,13 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
                 turmas = TurmaSerializer.Serializer(turmasQuerySet, many=True).data
                 
                 #Encontrar chamadas abertas a partir dos ids
-                chamadas =  map(lambda chamada:chamada['turma_id'], ChamadaSerializer.Serializer(Chamada.objects.filter(turma_id__in=turmasQuerySet)
+                chamadas =  map(lambda chamada:chamada['turma'], ChamadaSerializer.Serializer(Chamada.objects.filter(turma__in=turmasQuerySet)
                                                         .exclude(data_inicio__gt=date)
                                                         .exclude(data_fim__lt=date)
                                                         , many=True).data)
 
                 for turma in turmas:
-                     turma['horarios'] = Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id=turma['id'])
+                     turma['horarios'] = Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma=turma['id'])
                                             , many=True).data
                      turma['aberta'] = turma['id'] in list(chamadas)
                 res = {'Turmas': turmas}
@@ -60,14 +59,14 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
             #Lógica para usuário do tipo Professor
             else:                
                 #Encontrar as turmas que o usuário administra
-                turmas = TurmaSerializer.Serializer(Turma.objects.filter(professor_id=userSerialized['id']), many=True).data
+                turmas = TurmaSerializer.Serializer(Turma.objects.filter(professor=userSerialized['id']), many=True).data
                 turmas_id = map(lambda turma:turma['id'], turmas)
                 dia_semana = date.weekday()
 
                 if dia_semana < 6:
                     #Encontrar horarios a partir dos ids
-                    horarios_abertos = map(lambda horario:horario['turma_id'],
-                                Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id__in=turmas_id)
+                    horarios_abertos = map(lambda horario:horario['turma'],
+                                Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma__in=turmas_id)
                                                             .filter(dia_semana=WeekdayMap[dia_semana][0])
                                                             .exclude(hora_inicio__gt=date.hour)
                                                             .exclude(hora_fim__lt=date.hour)
@@ -75,11 +74,11 @@ class ViewSet(GenericViewSet, RetrieveModelMixin):
                     for turma in turmas:
                         turma.aberta = turma['id'] in horarios_abertos
 
-                horarios = map(lambda horario:horario['turma_id'],
-                Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id__in=turmas_id)
+                horarios = map(lambda horario:horario['turma'],
+                Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma__in=turmas_id)
                                             , many=True).data)
                 for turma in turmas:
-                        turma['horarios'] = Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma_id=turma['id'])
+                        turma['horarios'] = Turma_HorarioSerializer.Serializer(Turma_Horario.objects.filter(turma=turma['id'])
                                             , many=True).data
 
                 res = {'Turmas': turmas}

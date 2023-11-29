@@ -2,6 +2,7 @@ version: "2"
 services:
   db:
     image: mysql:8
+    restart: always
     container_name: smartdb
     environment:
       - MYSQL_DATABASE=db
@@ -21,6 +22,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - /opt/docker/smartattendance/volumes/web:/var/lib/atestado
       - /tmp/app/mysqld:/var/run/mysqld
+      - /web/files:/var/run/web/files
     depends_on:
       - db
