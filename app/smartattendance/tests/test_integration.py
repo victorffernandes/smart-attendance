@@ -8,9 +8,9 @@ from ..lib import WeekdayMap
 class IntegrationTestCase(TestCase):
     def test_associar_aluno_a_turma_e_presenca(self):
         professor = UsuarioFactory(usuario_tipo='P')
-        turma = TurmaFactory(professor_id=professor)
+        turma = TurmaFactory(professor=professor)
         aluno = UsuarioFactory(usuario_tipo = 'A',id = 1)
-        Aluno_TurmaFactory(aluno_id=aluno, turma_id=turma)
+        Aluno_TurmaFactory(aluno=aluno, turma=turma)
         response = self.client.get(f"/usuario/{aluno.id}/listar_turma/")
 
         self.assertEqual(response.json()["Turmas"][0]['aberta'], False)
@@ -19,16 +19,17 @@ class IntegrationTestCase(TestCase):
 
     def test_test_associar_alunos_a_turma_e_iniciar_chamada(self):
         professor = UsuarioFactory(usuario_tipo='P')
-        turma = TurmaFactory(professor_id=professor)
+        turma = TurmaFactory(professor=professor)
         aluno = UsuarioFactory(usuario_tipo = 'A',id = 1)
-        Aluno_TurmaFactory(aluno_id=aluno, turma_id=turma)
+        Aluno_TurmaFactory(aluno=aluno, turma=turma)
         data = {
-            'turma_id': turma.id,
+            'turma': turma.id,
             'latitude': 123.456,  
             'longitude': -78.910, 
             'data_início' : (datetime.now() - timedelta(hours=2)).strftime('%Y-%m-%d-%H'),
-            'data_fim' : (datetime.now() + timedelta(hours=2)).strftime('%Y-%m-%d-%H'),
-            'raio': 5.0,  
+            'data_fim' : '240',
+            'raio': 5.0,
+            'latLong': 'LatLng(lat: -22.88, lng: -14.17)',
         }
 
         self.client.put(f'/turma/iniciar_chamada/', data, format='json', content_type='application/json')
@@ -39,13 +40,13 @@ class IntegrationTestCase(TestCase):
 class TurmaAlunoIntegrationTestCase(TestCase):
     def test_associar_alunos_a_turma(self):
         professor = UsuarioFactory(usuario_tipo='P')
-        turma = TurmaFactory(professor_id=professor)
+        turma = TurmaFactory(professor=professor)
 
         aluno2 = UsuarioFactory(usuario_tipo = 'A',id = 1)
         aluno1 = UsuarioFactory(usuario_tipo = 'A', id = 2)
 
-        Aluno_TurmaFactory(aluno_id=aluno1, turma_id=turma)
-        Aluno_TurmaFactory(aluno_id=aluno2, turma_id=turma)
+        Aluno_TurmaFactory(aluno=aluno1, turma=turma)
+        Aluno_TurmaFactory(aluno=aluno2, turma=turma)
         response1 = self.client.get(f"/usuario/{aluno1.id}/listar_turma/")
         
         response2 = self.client.get(f"/usuario/{aluno2.id}/listar_turma/")
@@ -56,18 +57,18 @@ class ChamadaPresencaIntegrationTestCase(TestCase):
     def test_associar_presencas_a_chamada(self):
         usuario = UsuarioFactory(usuario_tipo = 'A')
         professor = UsuarioFactory(usuario_tipo='P')
-        turma = TurmaFactory(professor_id=professor)
-        aluno_turma = Aluno_TurmaFactory(aluno_id=usuario, turma_id=turma)
-        chamada = ChamadaFactory(turma_id=turma)
-        presenca = PresencaFactory(status="P", aluno_id= usuario, chamada_id = chamada)
+        turma = TurmaFactory(professor=professor)
+        aluno_turma = Aluno_TurmaFactory(aluno=usuario, turma=turma)
+        chamada = ChamadaFactory(turma=turma)
+        presenca = PresencaFactory(status="P", aluno= usuario, chamada = chamada)
         self.assertEqual(presenca.status, "P")
 
 class UsuarioTurmaIntegrationTestCase(TestCase):
     def test_associar_turma_a_usuario(self):
         usuario = UsuarioFactory(usuario_tipo = 'A')
         professor = UsuarioFactory(usuario_tipo='P')
-        turma = TurmaFactory(professor_id=professor)
+        turma = TurmaFactory(professor=professor)
 
-        aluno_turma = Aluno_TurmaFactory(aluno_id=usuario, turma_id=turma)
-        self.assertEqual(aluno_turma.aluno_id, usuario)
+        aluno_turma = Aluno_TurmaFactory(aluno=usuario, turma=turma)
+        self.assertEqual(aluno_turma.aluno, usuario)
  

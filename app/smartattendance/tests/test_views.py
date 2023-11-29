@@ -10,8 +10,8 @@ from .factories import *
 
 
 class UsuarioViewSetTestCase(TestCase):
-      def get_listar_url(self, usuario_id):
-          return (f"/usuario/{usuario_id}/listar_turma/")   
+      def get_listar_url(self, usuario):
+          return (f"/usuario/{usuario}/listar_turma/")   
 
       def test_get_listar_turmas_aluno_vazio(self):
           """Listar turmas aluno sem turmas inscritas"""
@@ -35,8 +35,8 @@ class UsuarioViewSetTestCase(TestCase):
       def test_get_listar_turmas_professor(self):
           """Listar turmas de professor"""
           usuario = UsuarioFactory(usuario_tipo='P')
-          TurmaFactory(professor_id=usuario)
-          TurmaFactory(professor_id=usuario)
+          TurmaFactory(professor=usuario)
+          TurmaFactory(professor=usuario)
           response = self.client.get(self.get_listar_url(usuario.id))
           self.assertEqual(response.status_code, status.HTTP_200_OK)
           self.assertEqual(len(response.data['Turmas']), 2)
@@ -46,9 +46,9 @@ class UsuarioViewSetTestCase(TestCase):
           date = datetime.now()
           dia_semana = date.weekday()
           usuario = UsuarioFactory(usuario_tipo='P')
-          TurmaFactory(professor_id=usuario)
-          turma = TurmaFactory(professor_id=usuario)
-          Turma_HorarioFactory(turma_id=turma, dia_semana=WeekdayMap[dia_semana][0])
+          TurmaFactory(professor=usuario)
+          turma = TurmaFactory(professor=usuario)
+          Turma_HorarioFactory(turma=turma, dia_semana=WeekdayMap[dia_semana][0])
           response = self.client.get(self.get_listar_url(usuario.id))
           self.assertEqual(response.status_code, status.HTTP_200_OK)
           self.assertEqual(len(response.data['Turmas']), 2)
@@ -58,9 +58,9 @@ class UsuarioViewSetTestCase(TestCase):
           date = datetime.now()
           dia_semana = date.weekday()
           usuario = UsuarioFactory(usuario_tipo='P')
-          TurmaFactory(professor_id=usuario)
-          turma = TurmaFactory(professor_id=usuario)
-          Turma_HorarioFactory(turma_id=turma, dia_semana=WeekdayMap[dia_semana][0])
+          TurmaFactory(professor=usuario)
+          turma = TurmaFactory(professor=usuario)
+          Turma_HorarioFactory(turma=turma, dia_semana=WeekdayMap[dia_semana][0])
           response = self.client.get(self.get_listar_url(usuario.id))
           self.assertEqual(response.status_code, status.HTTP_200_OK)
           self.assertEqual(len(response.data['Turmas']), 2)
@@ -70,11 +70,11 @@ class UsuarioViewSetTestCase(TestCase):
           """Listar turmas do aluno"""
           professor = UsuarioFactory(usuario_tipo='P')
           aluno = UsuarioFactory()
-          turma1 = TurmaFactory(professor_id=professor)
-          turma2 = TurmaFactory(professor_id=professor)
+          turma1 = TurmaFactory(professor=professor)
+          turma2 = TurmaFactory(professor=professor)
 
-          Aluno_TurmaFactory(aluno_id=aluno, turma_id=turma1)
-          Aluno_TurmaFactory(aluno_id=aluno, turma_id=turma2)
+          Aluno_TurmaFactory(aluno=aluno, turma=turma1)
+          Aluno_TurmaFactory(aluno=aluno, turma=turma2)
 
           response = self.client.get(self.get_listar_url(aluno.id))
           self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -84,13 +84,13 @@ class UsuarioViewSetTestCase(TestCase):
           """Listar turmas do aluno, turma com flag de horário de chamada"""
           professor = UsuarioFactory(usuario_tipo='P')
           aluno = UsuarioFactory()
-          turma1 = TurmaFactory(professor_id=professor)
-          turma2 = TurmaFactory(professor_id=professor)
+          turma1 = TurmaFactory(professor=professor)
+          turma2 = TurmaFactory(professor=professor)
 
-          Aluno_TurmaFactory(aluno_id=aluno, turma_id=turma1)
-          Aluno_TurmaFactory(aluno_id=aluno, turma_id=turma2)
+          Aluno_TurmaFactory(aluno=aluno, turma=turma1)
+          Aluno_TurmaFactory(aluno=aluno, turma=turma2)
           
-          ChamadaFactory(turma_id=turma1)
+          ChamadaFactory(turma=turma1)
 
           response = self.client.get(self.get_listar_url(aluno.id))
           self.assertEqual(response.status_code, status.HTTP_200_OK)
